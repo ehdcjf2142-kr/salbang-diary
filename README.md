@@ -2,6 +2,8 @@
 
 [Astro](https://astro.build/) 정적 사이트입니다. GitHub에 올린 뒤 **GitHub Actions → GitHub Pages**로 무료 배포할 수 있습니다.
 
+**배포된 사이트:** [https://ehdcjf2142-kr.github.io/salbang-diary/](https://ehdcjf2142-kr.github.io/salbang-diary/)
+
 ## 로컬에서 보기
 
 저장소 루트에서:
@@ -13,6 +15,12 @@ npm run dev
 
 브라우저 주소는 **`http://localhost:4321/salbang-diary/`** 입니다.  
 (`base`가 저장소 이름과 맞아야 합니다. 저장소 이름이 `salbang-diary`가 아니면 [astro.config.mjs](astro.config.mjs)의 `PUBLIC_BASE` 기본값을 바꾸세요.)
+
+### 더블클릭으로 미리보기 (Windows)
+
+프로젝트 폴더의 **`로컬에서보기.bat`** 을 더블클릭하면 빌드 후 브라우저가 열립니다. **Node.js**가 설치되어 있어야 합니다. 끝내려면 검은 창에서 **Ctrl+C** 후 창을 닫으면 됩니다.
+
+`dist/index.html`만 더블클릭해서 여는 방식(`file://`)은 이 프로젝트처럼 주소에 **`/salbang-diary/`** 같은 경로가 붙는 경우 글·CSS 링크가 깨지므로 권장하지 않습니다.
 
 ## GitHub Pages 배포
 
