@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('posts');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+function formatDate(d: Date) {
+	return new Intl.DateTimeFormat('ko-KR', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		weekday: 'long',
+	}).format(d);
+}
+
+const baseUrl = import.meta.env.BASE_URL;
+const photos = post.data.photos ?? [];
+/** public 폴더 기준 절대 경로 (/uploads/...) → GitHub Pages base 경로 포함 */
+function resolvePublicSrc(src: string) {
+	if (!src.startsWith('/')) return src;
+	const root = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+	return `${root}${src}`;
+}
+---
+
+<BaseLayout title={post.data.title} description={post.data.summary}>
+	<nav class="back" aria-label="뒤로">
+		<a href={baseUrl}>← 목록으로</a>
+	</nav>
+
+	<article class="post">
+		<header>
+			<time datetime={post.data.date.toISOString()} style="font-size: 0.85rem; color: var(--muted);">
+				{formatDate(post.data.date)}
+			</time>
+			<h1>{post.data.title}</h1>
+			{post.data.summary && <p class="lead">{post.data.summary}</p>}
+		</header>
+
+		{
+			photos.length > 0 && (
+				<div class="gallery" aria-label="사진">
+					{photos.map((src) => (
+						<img src={resolvePublicSrc(src)} alt="" loading="lazy" />
+					))}
+				</div>
+			)
+		}
+
+		<div class="body">
+			<Content />
+		</div>
+	</article>
+</BaseLayout>

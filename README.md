@@ -1,0 +1,52 @@
+# 살방살방 — 안동 강변 토요 러닝 기록
+
+[Astro](https://astro.build/) 정적 사이트입니다. GitHub에 올린 뒤 **GitHub Actions → GitHub Pages**로 무료 배포할 수 있습니다.
+
+## 로컬에서 보기
+
+저장소 루트에서:
+
+```bash
+npm install
+npm run dev
+```
+
+브라우저 주소는 **`http://localhost:4321/salbang-diary/`** 입니다.  
+(`base`가 저장소 이름과 맞아야 합니다. 저장소 이름이 `salbang-diary`가 아니면 [astro.config.mjs](astro.config.mjs)의 `PUBLIC_BASE` 기본값을 바꾸세요.)
+
+## GitHub Pages 배포
+
+1. 이 프로젝트를 GitHub 저장소에 푸시합니다. (저장소 **이름**이 `astro.config.mjs`의 기본 `base` 경로 `/salbang-diary/`와 같으면 그대로 두면 됩니다.)
+2. 저장소 **Settings → Pages**에서 **Source: GitHub Actions**를 선택합니다.
+3. `main`에 푸시하면 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)이 빌드 후 Pages에 올립니다.
+4. 사이트 주소: `https://<사용자이름>.github.io/<저장소이름>/`
+
+빌드 시 `PUBLIC_SITE_URL` / `PUBLIC_BASE`는 워크플로에서 자동으로 채워집니다.
+
+## 기록(글) 넣는 방법
+
+### 1) Decap CMS (`/admin/`)
+
+`https://<사용자>.github.io/<저장소>/admin/` 에서 편집할 수 있게 [public/admin/config.yml](public/admin/config.yml)을 준비해 두었습니다.  
+GitHub에 글을 저장하려면 **GitHub OAuth 앱**과 **OAuth 프록시**(예: Cloudflare Workers 등 커뮤니티 예제)가 필요합니다. [Decap 문서 — GitHub 백엔드](https://decapcms.org/docs/github-backend/)를 참고해 인증을 연결하세요.
+
+`config.yml`에서 다음을 반드시 본인 값으로 바꿉니다.
+
+- `backend.repo`
+- `site_url`, `display_url`
+- `public_folder` (예: 저장소 이름이 `my-run`이면 `/my-run/uploads`)
+
+### 2) 저장소에 마크다운 직접 추가 (인증 없이)
+
+GitHub 웹이나 모바일 앱에서 `src/content/posts/` 아래에 `.md` 파일을 추가해도 됩니다. 앞부분(프론트매터) 예시는 기존 `2026-05-10-welcome.md`를 복사하면 됩니다. 이미지는 `public/uploads/`에 넣고, 본문에는 `![설명](/저장소경로/uploads/파일명)` 형식으로 넣습니다 (프로젝트 사이트일 때 경로에 저장소 이름이 포함됩니다).
+
+## 오픈채팅 링크 ([src/site.config.ts](src/site.config.ts))
+
+- **`mode: 'hint'`** (기본): 안내 문구만 표시합니다. 카카오 초대 URL을 사이트에 직접 안 올립니다.
+- **`mode: 'link'`** + `url`에 오픈채팅 초대 링크: 버튼으로 바로 열 수 있습니다.
+
+필요할 때만 `link`로 바꾸는 것을 권장합니다.
+
+## 라이선스
+
+개인·모임용으로 자유롭게 수정해 사용하세요.

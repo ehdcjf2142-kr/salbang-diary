@@ -1,0 +1,43 @@
+# 사용 전: YOUR_USERNAME·저장소 이름·public_folder(/저장소이름/uploads)·site_url 을 수정하세요.
+# GitHub OAuth 앱 + 인증 프록시가 필요합니다. README의 「모바일에서 글 쓰기」 참고.
+
+backend:
+  name: github
+  repo: YOUR_USERNAME/salbang-diary
+  branch: main
+  # OAuth 프록시 배포 후 주석 해제 (예: Cloudflare Workers):
+  # base_url: https://YOUR_OAUTH_HOST
+
+media_folder: public/uploads
+# GitHub Pages 프로젝트 사이트 (저장소 이름이 salbang-diary일 때):
+public_folder: /salbang-diary/uploads
+
+site_url: https://YOUR_USERNAME.github.io
+display_url: https://YOUR_USERNAME.github.io/salbang-diary
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  - name: posts
+    label: 토요 기록
+    label_singular: 기록
+    folder: src/content/posts
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: 제목, name: title, widget: string }
+      - {
+          label: 날짜,
+          name: date,
+          widget: datetime,
+          date_format: YYYY-MM-DD,
+          time_format: false,
+          picker_utc: false,
+        }
+      - { label: 한 줄 요약, name: summary, widget: string, required: false }
+      - { label: 본문, name: body, widget: markdown }

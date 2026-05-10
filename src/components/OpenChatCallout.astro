@@ -1,0 +1,28 @@
+---
+import { siteConfig } from '../site.config';
+
+const base = import.meta.env.BASE_URL;
+const { mode, url, hint, buttonLabel } = siteConfig.openChat;
+---
+
+<section class="callout" aria-labelledby="chat-heading">
+	<strong id="chat-heading">함께하고 싶다면</strong>
+	{
+		mode === 'link' && url ? (
+			<>
+				<p style="margin: 0.5rem 0 0;">소통은 카카오톡 오픈채팅에서 해요. 아래에서 들어올 수 있어요.</p>
+				<a class="button" href={url} target="_blank" rel="noopener noreferrer">
+					{buttonLabel}
+				</a>
+			</>
+		) : (
+			<p style="margin: 0.5rem 0 0;">{hint}</p>
+		)
+	}
+	<p style="margin: 0.75rem 0 0; font-size: 0.85rem;">
+		기록·글은 이 웹사이트에, 실시간 이야기는 채팅으로 나눠요.
+	</p>
+	<p style="margin: 0.5rem 0 0; font-size: 0.85rem;">
+		<a href={`${base}admin/`}>기록 남기기 (관리)</a>
+	</p>
+</section>

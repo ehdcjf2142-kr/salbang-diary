@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OpenChatCallout from '../components/OpenChatCallout.astro';
+import { siteConfig } from '../site.config';
+---
+
+<BaseLayout title="이 모임은" description="살방살방 안동 강변 토요 모임 소개">
+	<article class="post" style="font-family: var(--font-serif);">
+		<h1 style="font-size: 1.5rem;">이 모임은</h1>
+		<div class="body" style="font-size: 1.05rem;">
+			<p>
+				<strong>{siteConfig.siteTitle}</strong>은 안동 강변에서 매주 토요일에 모여 걷고 뛰는 모임이에요. 페이스는
+				각자에게 맡기고, 마지막에는 함께 사진 한 장 남기는 걸 목표로 해요.
+			</p>
+			<p>
+				나중에 만들 <strong>살방살방 티셔츠</strong>를 입고 오면 더 좋고요. 기록은 이 사이트에, 실시간 이야기는
+				카카오톡 오픈채팅에서 나눠요.
+			</p>
+		</div>
+	</article>
+
+	<OpenChatCallout />
+</BaseLayout>
