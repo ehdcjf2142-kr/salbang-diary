@@ -6,6 +6,9 @@ export const siteConfig = {
 	siteTitle: '살방살방',
 	tagline:
 		'안동 강변에서 매주 토요일. 남녀노소, 각자의 페이스로 걷고 뛰고, 마지막엔 함께 사진 한 장.',
+	/** 랜딩용 임시 안내 — 정식으로 손볼 때까지 문구만 바꿔도 됩니다. */
+	tempSiteNotice:
+		'아직 소규모로 시작한 모임이에요. 이 사이트도 천천히 채워 갈 예정이고, 지금은 운영 쪽에서 짧은 기록만 올립니다. 오픈채팅으로 편하게 물어봐 주세요.',
 	openChat: {
 		mode: 'hint' as 'link' | 'hint',
 		url: '',

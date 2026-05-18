@@ -35,7 +35,9 @@ npm run dev
 
 ## 기록(글) 넣는 방법
 
-### 1) Decap CMS (`/admin/`)
+공개 사이트 메뉴에는 **글 쓰기(admin)** 링크를 두지 않았습니다. 방문자는 읽기만 하고, 글은 저장소에 쓰기 권한이 있는 사람이 올립니다.
+
+### 1) Decap CMS (`/admin/`) — 선택
 
 `https://<사용자>.github.io/<저장소>/admin/` 에서 편집할 수 있게 [public/admin/config.yml](public/admin/config.yml)을 준비해 두었습니다.  
 GitHub에 글을 저장하려면 **GitHub OAuth 앱**과 **OAuth 프록시**(예: Cloudflare Workers 등 커뮤니티 예제)가 필요합니다. [Decap 문서 — GitHub 백엔드](https://decapcms.org/docs/github-backend/)를 참고해 인증을 연결하세요.

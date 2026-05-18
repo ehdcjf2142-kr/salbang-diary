@@ -1,7 +1,6 @@
 ---
 import { siteConfig } from '../site.config';
 
-const base = import.meta.env.BASE_URL;
 const { mode, url, hint, buttonLabel } = siteConfig.openChat;
 ---
 
@@ -20,9 +19,6 @@ const { mode, url, hint, buttonLabel } = siteConfig.openChat;
 		)
 	}
 	<p style="margin: 0.75rem 0 0; font-size: 0.85rem;">
-		기록·글은 이 웹사이트에, 실시간 이야기는 채팅으로 나눠요.
-	</p>
-	<p style="margin: 0.5rem 0 0; font-size: 0.85rem;">
-		<a href={`${base}admin/`}>기록 남기기 (관리)</a>
+		모임 후기·사진 같은 기록은 이 사이트에 올리고, 실시간 이야기는 채팅으로 나눠요.
 	</p>
 </section>

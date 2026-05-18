@@ -63,6 +63,18 @@ a:hover {
 	color: var(--muted);
 }
 
+.temp-notice {
+	margin: 0 0 1.5rem;
+	padding: 0.9rem 1rem;
+	font-size: 0.9rem;
+	font-family: var(--font-sans);
+	color: var(--muted);
+	background: #fff;
+	border: 1px solid var(--rule);
+	border-radius: 6px;
+	line-height: 1.55;
+}
+
 .nav-row {
 	margin-top: 1.25rem;
 	display: flex;
