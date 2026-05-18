@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRecordPosts, formatPostDate, RECORDS_SINCE } from '../../utils/posts';
+
+const posts = await getRecordPosts();
+const base = import.meta.env.BASE_URL;
+const sinceLabel = formatPostDate(RECORDS_SINCE);
+---
+
+<BaseLayout title="기록 목록" description="살방살방 토요 모임 기록" navActive="records">
+	<section class="records-page" aria-labelledby="records-heading">
+		<h1 id="records-heading" class="records-page__title">기록 목록</h1>
+		<p class="records-page__intro">
+			{sinceLabel}부터 모임 후기가 여기에 쌓여요.
+		</p>
+
+		{
+			posts.length === 0 ? (
+				<p class="records-page__empty">아직 올라온 기록이 없어요.</p>
+			) : (
+				<ul class="post-list">
+					{posts.map((post) => (
+						<li>
+							<time datetime={post.data.date.toISOString()}>{formatPostDate(post.data.date)}</time>
+							<h2 class="post-list__title">
+								<a href={`${base}posts/${post.id}/`}>{post.data.title}</a>
+							</h2>
+							{post.data.summary && <p class="excerpt">{post.data.summary}</p>}
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</BaseLayout>

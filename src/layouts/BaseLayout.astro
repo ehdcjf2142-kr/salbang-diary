@@ -10,9 +10,10 @@ interface Props {
 	description?: string;
 	/** 홈 히어로 사용 시 상단 제목은 히어로에 두고, 헤더는 축소 */
 	compactHeader?: boolean;
+	navActive?: 'about' | 'records';
 }
 
-const { title, description = siteConfig.tagline, compactHeader = false } = Astro.props;
+const { title, description = siteConfig.tagline, compactHeader = false, navActive } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const pageTitle = title === siteConfig.siteTitle ? title : `${title} · ${siteConfig.siteTitle}`;
 
@@ -64,8 +65,16 @@ const ogImageUrl = new URL(og.src, siteOrigin).href;
 				}
 				{!compactHeader && <p class="site-tagline">{siteConfig.tagline}</p>}
 				<nav class="nav-row" aria-label="주요 링크">
-					<a href={base}>기록 목록</a>
-					<a href={`${base}about/`}>이 모임은</a>
+					<a href={base} class:list={['nav-link', navActive === 'about' && 'nav-link--active']} aria-current={navActive === 'about' ? 'page' : undefined}>
+						이 모임은
+					</a>
+					<a
+						href={`${base}records/`}
+						class:list={['nav-link', navActive === 'records' && 'nav-link--active']}
+						aria-current={navActive === 'records' ? 'page' : undefined}
+					>
+						기록 목록
+					</a>
 				</nav>
 			</header>
 			<slot />

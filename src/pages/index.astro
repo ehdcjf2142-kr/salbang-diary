@@ -1,46 +1,39 @@
 ---
-import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/HomeHero.astro';
 import OpenChatCallout from '../components/OpenChatCallout.astro';
 import { siteConfig } from '../site.config';
 import dividerImg from '../assets/images/section-divider.png';
-import ogThumb from '../assets/images/og-thumbnail.png';
 import salbangLogo from '../assets/images/salbang-logo.png';
-
-const posts = (await getCollection('posts')).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
-
-function formatDate(d: Date) {
-	return new Intl.DateTimeFormat('ko-KR', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-		weekday: 'short',
-	}).format(d);
-}
 ---
 
-<BaseLayout title={siteConfig.siteTitle} description={siteConfig.tagline} compactHeader>
+<BaseLayout title="이 모임은" description={siteConfig.tagline} compactHeader navActive="about">
 	<HomeHero slot="hero" />
 
-	<div class="notice-block">
-		<Image
-			class="notice-block__logo"
-			src={salbangLogo}
-			alt="살방살방 그래픽 시안"
-			widths={[100, 200]}
-			sizes="100px"
-			loading="eager"
-			decoding="async"
-		/>
-		<div class="notice-block__copy">
+	<article class="post about-page">
+		<h1 class="about-page__title">이 모임은</h1>
+		<div class="body">
 			<p class="temp-notice" role="status">{siteConfig.tempSiteNotice}</p>
-			<p class="tshirt-note">{siteConfig.tshirtNote}</p>
+			<p>
+				<strong>{siteConfig.siteTitle}</strong>은 안동 강변에서 매주 토요일에 모여 걷고 뛰는 모임이에요. 페이스는
+				각자에게 맡기고, 마지막에는 함께 사진 한 장 남기는 걸 목표로 해요.
+			</p>
+			<div class="notice-block">
+				<Image
+					class="notice-block__logo"
+					src={salbangLogo}
+					alt="살방살방 그래픽 시안"
+					widths={[100, 200]}
+					sizes="100px"
+					loading="lazy"
+					decoding="async"
+				/>
+				<p class="tshirt-note">{siteConfig.tshirtNote}</p>
+			</div>
+			<p>기록은 <a href={`${import.meta.env.BASE_URL}records/`}>기록 목록</a>에, 실시간 이야기는 카카오톡 오픈채팅에서 나눠요.</p>
 		</div>
-	</div>
+	</article>
 
 	<Image
 		class="section-divider-img"
@@ -53,39 +46,4 @@ function formatDate(d: Date) {
 	/>
 
 	<OpenChatCallout />
-
-	<section class="records-section" aria-labelledby="records-heading">
-		<div class="records-section__intro">
-			<Image
-				class="records-section__thumb"
-				src={ogThumb}
-				alt=""
-				widths={[168, 240, 360]}
-				sizes="(max-width: 480px) 200px, 168px"
-				loading="lazy"
-				decoding="async"
-			/>
-			<div class="records-section__intro-text">
-				<h2 id="records-heading" class="records-section__heading">기록은 천천히 쌓여요</h2>
-				<p class="records-section__sub">토요 모임 후기와 사진이 여기에 차곡차곡 남을 거예요.</p>
-			</div>
-		</div>
-		{
-			posts.length === 0 ? (
-				<p class="records-section__empty">아직 올라온 기록이 없어요.</p>
-			) : (
-				<ul class="post-list">
-					{posts.map((post) => (
-						<li>
-							<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-							<h3 class="post-list__title">
-								<a href={`${import.meta.env.BASE_URL}posts/${post.id}/`}>{post.data.title}</a>
-							</h3>
-							{post.data.summary && <p class="excerpt">{post.data.summary}</p>}
-						</li>
-					))}
-				</ul>
-			)
-		}
-	</section>
 </BaseLayout>
