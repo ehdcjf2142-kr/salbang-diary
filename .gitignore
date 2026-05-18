@@ -1,3 +1,6 @@
+# 로컬에만 두는 작업용 원본 폴더(선택). 배포용 이미지는 src/assets/images 에 포함됨.
+jodong_image/
+
 # build output
 dist/
 # generated types

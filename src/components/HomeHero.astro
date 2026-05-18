@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import heroDesktop from '../assets/images/hero-desktop.png';
+import heroMobile from '../assets/images/hero-mobile.png';
+import { siteConfig } from '../site.config';
+---
+
+<section class="home-hero" aria-labelledby="hero-heading">
+	<div class="home-hero__bg" aria-hidden="true">
+		<Image
+			class="home-hero__img home-hero__img--desktop"
+			src={heroDesktop}
+			alt=""
+			widths={[1280, 1600, 1920]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			decoding="async"
+		/>
+		<Image
+			class="home-hero__img home-hero__img--mobile"
+			src={heroMobile}
+			alt=""
+			widths={[480, 640, 768, 960]}
+			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
+			decoding="async"
+		/>
+	</div>
+	<div class="home-hero__scrim" aria-hidden="true"></div>
+	<div class="home-hero__inner">
+		<h1 id="hero-heading" class="home-hero__title">{siteConfig.siteTitle}</h1>
+		<p class="home-hero__tagline">{siteConfig.tagline}</p>
+	</div>
+</section>

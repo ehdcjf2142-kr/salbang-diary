@@ -1,8 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeHero from '../components/HomeHero.astro';
 import OpenChatCallout from '../components/OpenChatCallout.astro';
 import { siteConfig } from '../site.config';
+import dividerImg from '../assets/images/section-divider.png';
+import ogThumb from '../assets/images/og-thumbnail.png';
+import salbangLogo from '../assets/images/salbang-logo.png';
 
 const posts = (await getCollection('posts')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -18,25 +23,64 @@ function formatDate(d: Date) {
 }
 ---
 
-<BaseLayout title={siteConfig.siteTitle} description={siteConfig.tagline}>
-	<p class="temp-notice" role="status">{siteConfig.tempSiteNotice}</p>
+<BaseLayout title={siteConfig.siteTitle} description={siteConfig.tagline} compactHeader>
+	<HomeHero slot="hero" />
+
+	<div class="notice-block">
+		<Image
+			class="notice-block__logo"
+			src={salbangLogo}
+			alt="살방살방 그래픽 시안"
+			widths={[100, 200]}
+			sizes="100px"
+			loading="eager"
+			decoding="async"
+		/>
+		<div class="notice-block__copy">
+			<p class="temp-notice" role="status">{siteConfig.tempSiteNotice}</p>
+			<p class="tshirt-note">{siteConfig.tshirtNote}</p>
+		</div>
+	</div>
+
+	<Image
+		class="section-divider-img"
+		src={dividerImg}
+		alt=""
+		widths={[120, 180]}
+		sizes="120px"
+		loading="lazy"
+		decoding="async"
+	/>
+
 	<OpenChatCallout />
 
-	<section aria-labelledby="posts-heading">
-		<h2 id="posts-heading" class="visually-hidden" style="position:absolute;clip:rect(0 0 0 0);">
-			기록 목록
-		</h2>
+	<section class="records-section" aria-labelledby="records-heading">
+		<div class="records-section__intro">
+			<Image
+				class="records-section__thumb"
+				src={ogThumb}
+				alt=""
+				widths={[168, 240, 360]}
+				sizes="(max-width: 480px) 200px, 168px"
+				loading="lazy"
+				decoding="async"
+			/>
+			<div class="records-section__intro-text">
+				<h2 id="records-heading" class="records-section__heading">기록은 천천히 쌓여요</h2>
+				<p class="records-section__sub">토요 모임 후기와 사진이 여기에 차곡차곡 남을 거예요.</p>
+			</div>
+		</div>
 		{
 			posts.length === 0 ? (
-				<p>아직 올라온 기록이 없어요.</p>
+				<p class="records-section__empty">아직 올라온 기록이 없어요.</p>
 			) : (
 				<ul class="post-list">
 					{posts.map((post) => (
 						<li>
 							<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-							<h2>
+							<h3 class="post-list__title">
 								<a href={`${import.meta.env.BASE_URL}posts/${post.id}/`}>{post.data.title}</a>
-							</h2>
+							</h3>
 							{post.data.summary && <p class="excerpt">{post.data.summary}</p>}
 						</li>
 					))}

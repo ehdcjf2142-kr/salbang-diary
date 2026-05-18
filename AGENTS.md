@@ -16,9 +16,10 @@ summary: 한 줄 요약 (없으면 줄 삭제)
 ```
 
 3. `---` 다음 줄부터 마크다운 본문.
-4. **사진(선택):** `public/uploads/`에 넣고 본문에  
+4. **글 속 사진(선택):** `public/uploads/`에 넣고 본문에  
    `![](/salbang-diary/uploads/파일명.jpg)`  
-   저장소 이름이 `salbang-diary`가 아니면 `astro.config.mjs`의 `base`와 동일한 경로로 맞출 것.
+   저장소 이름이 `salbang-diary`가 아니면 `astro.config.mjs`의 `base`와 동일한 경로로 맞출 것.  
+   (홈 히어로·로고 등 **사이트 꾸밈**용 이미지는 `src/assets/images/` — 에이전트가 옮겨 두면 됨.)
 5. `npm run build`로 확인. 사용자가 배포 원하면 `git push`.
 
 `photos` 프론트필드는 선택. 본문 이미지만 써도 됨.
