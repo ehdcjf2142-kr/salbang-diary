@@ -37,6 +37,10 @@ npm run dev
 
 공개 사이트 메뉴에는 **글 쓰기(admin)** 링크를 두지 않았습니다. 방문자는 읽기만 하고, 글은 저장소에 쓰기 권한이 있는 사람이 올립니다.
 
+### Cursor 새 채팅으로 빠르게 (에이전트)
+
+프로젝트 루트의 **[AGENTS.md](AGENTS.md)** 에 규칙·복붙용 프롬프트가 있습니다. 새 채팅에서는 `@AGENTS.md`만 붙이거나, 그 안의 **「사용자 → 새 채팅에 붙여넣기」** 블록만 채워내면 됩니다. 템플릿: [docs/new-post.template.md](docs/new-post.template.md).
+
 ### 1) Decap CMS (`/admin/`) — 선택
 
 `https://<사용자>.github.io/<저장소>/admin/` 에서 편집할 수 있게 [public/admin/config.yml](public/admin/config.yml)을 준비해 두었습니다.  
