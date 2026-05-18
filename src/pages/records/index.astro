@@ -20,12 +20,15 @@ const sinceLabel = formatPostDate(RECORDS_SINCE);
 			) : (
 				<ul class="post-list">
 					{posts.map((post) => (
-						<li>
-							<time datetime={post.data.date.toISOString()}>{formatPostDate(post.data.date)}</time>
-							<h2 class="post-list__title">
-								<a href={`${base}posts/${post.id}/`}>{post.data.title}</a>
-							</h2>
-							{post.data.summary && <p class="excerpt">{post.data.summary}</p>}
+						<li class="post-list__item">
+							<a class="post-list__card" href={`${base}posts/${post.id}/`}>
+								<span class="post-list__body">
+									<time datetime={post.data.date.toISOString()}>{formatPostDate(post.data.date)}</time>
+									<h2 class="post-list__title">{post.data.title}</h2>
+									{post.data.summary && <p class="excerpt">{post.data.summary}</p>}
+								</span>
+								<span class="post-list__chevron" aria-hidden="true">›</span>
+							</a>
 						</li>
 					))}
 				</ul>
