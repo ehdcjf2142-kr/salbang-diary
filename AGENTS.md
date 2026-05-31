@@ -4,6 +4,8 @@
 
 ## 글 한 편 추가
 
+**시작:** `docs/posts-index.md`를 먼저 읽어 기존 글·형식을 확인한다.
+
 1. 파일: `src/content/posts/YYYY-MM-DD-영문슬러그.md` (슬러그: `a-z0-9-`만)
 2. 맨 위 YAML:
 
@@ -20,7 +22,14 @@ summary: 한 줄 요약 (없으면 줄 삭제)
    `![](/salbang-diary/uploads/파일명.jpg)`  
    저장소 이름이 `salbang-diary`가 아니면 `astro.config.mjs`의 `base`와 동일한 경로로 맞출 것.  
    (홈 히어로·로고 등 **사이트 꾸밈**용 이미지는 `src/assets/images/` — 에이전트가 옮겨 두면 됨.)
-5. `npm run build`로 확인. 사용자가 배포 원하면 `git push`.
+5. **`docs/posts-index.md` 갱신** (필수 — 글 추가할 때마다):
+   - `총 게시물` 수 +1, `마지막 갱신`을 오늘 날짜로
+   - **목록 (최신순)** 표 맨 위에 새 행 (#1). 기존 글 번호는 하나씩 밀기
+   - **게시물 상세** 맨 위에 새 섹션 (`### 1. YYYY-MM-DD — 제목`). 기존 섹션 번호 밀기
+   - 상세 섹션에는 제목·날짜·요약·슬러그·소스 파일·사이트 URL·기록 목록 노출·**본문 전체** 포함
+   - 형식은 기존 항목을 그대로 따를 것
+6. **`docs/posts-index.html`** 도 같은 내용으로 맞춘다 (Chrome 미리보기용).
+7. `npm run build`로 확인. 사용자가 배포 원하면 `git push`.
 
 `photos` 프론트필드는 선택. 본문 이미지만 써도 됨.
 
@@ -40,6 +49,7 @@ summary: 한 줄 요약 (없으면 줄 삭제)
 
 ```
 c:\dev\salbang-diary — AGENTS.md 기준으로 회차 글 추가해줘.
+(먼저 docs/posts-index.md 읽고, 글 추가 후 인덱스도 갱신)
 날짜: YYYY-MM-DD
 제목: …
 본문:
