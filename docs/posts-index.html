@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>살방살방 다이어리 — 게시물 목차</title>
+	<style>
+		:root {
+			--paper: #faf7f2;
+			--ink: #2c2825;
+			--muted: #6b6560;
+			--accent: #8b7355;
+			--accent-soft: #a89278;
+			--chevron: #b5a48f;
+			--rule: #e8e0d8;
+			--card: #fffdf9;
+			--shadow: rgba(44, 40, 37, 0.06);
+			--font-serif: Georgia, 'Times New Roman', serif;
+			--font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+			--font-mono: 'Cascadia Code', 'Consolas', monospace;
+		}
+
+		*, *::before, *::after { box-sizing: border-box; }
+
+		html {
+			font-size: 106%;
+			-webkit-text-size-adjust: 100%;
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: var(--font-sans);
+			color: var(--ink);
+			background: var(--paper);
+			line-height: 1.65;
+		}
+
+		a {
+			color: var(--accent);
+			text-decoration-color: var(--chevron);
+			text-underline-offset: 3px;
+		}
+
+		a:hover { text-decoration-thickness: 2px; }
+
+		code, .mono {
+			font-family: var(--font-mono);
+			font-size: 0.88em;
+			background: #f0ebe4;
+			padding: 0.12em 0.4em;
+			border-radius: 4px;
+		}
+
+		/* ----- header ----- */
+		.hero {
+			background: linear-gradient(160deg, #f3ece3 0%, var(--paper) 55%);
+			border-bottom: 1px solid var(--rule);
+			padding: 2.5rem 1.35rem 2rem;
+		}
+
+		.hero__inner {
+			max-width: 52rem;
+			margin: 0 auto;
+		}
+
+		.hero__eyebrow {
+			margin: 0 0 0.5rem;
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.hero h1 {
+			margin: 0 0 0.75rem;
+			font-family: var(--font-serif);
+			font-size: clamp(1.6rem, 4vw, 2.1rem);
+			font-weight: 600;
+			line-height: 1.25;
+			letter-spacing: -0.02em;
+		}
+
+		.hero__note {
+			margin: 0;
+			max-width: 38rem;
+			color: var(--muted);
+			font-size: 0.95rem;
+		}
+
+		.hero__note code { font-size: 0.85em; }
+
+		/* ----- layout ----- */
+		.wrap {
+			max-width: 52rem;
+			margin: 0 auto;
+			padding: 2rem 1.35rem 4rem;
+		}
+
+		/* ----- stats ----- */
+		.stats {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin-bottom: 2.25rem;
+		}
+
+		.stat {
+			flex: 1 1 8rem;
+			background: var(--card);
+			border: 1px solid var(--rule);
+			border-radius: 10px;
+			padding: 0.85rem 1.1rem;
+			box-shadow: 0 2px 8px var(--shadow);
+		}
+
+		.stat__label {
+			display: block;
+			font-size: 0.75rem;
+			color: var(--muted);
+			margin-bottom: 0.2rem;
+		}
+
+		.stat__value {
+			font-family: var(--font-serif);
+			font-size: 1.35rem;
+			font-weight: 600;
+			color: var(--accent);
+		}
+
+		/* ----- sections ----- */
+		section { margin-bottom: 2.75rem; }
+
+		h2 {
+			margin: 0 0 1rem;
+			font-family: var(--font-serif);
+			font-size: 1.25rem;
+			font-weight: 600;
+			padding-bottom: 0.45rem;
+			border-bottom: 2px solid var(--rule);
+		}
+
+		/* ----- table ----- */
+		.table-wrap {
+			overflow-x: auto;
+			border: 1px solid var(--rule);
+			border-radius: 10px;
+			background: var(--card);
+			box-shadow: 0 2px 10px var(--shadow);
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.92rem;
+		}
+
+		thead {
+			background: #f3ece3;
+		}
+
+		th, td {
+			padding: 0.75rem 1rem;
+			text-align: left;
+			border-bottom: 1px solid var(--rule);
+			vertical-align: top;
+		}
+
+		th {
+			font-size: 0.78rem;
+			font-weight: 600;
+			color: var(--muted);
+			letter-spacing: 0.04em;
+			text-transform: uppercase;
+		}
+
+		tr:last-child td { border-bottom: none; }
+
+		tbody tr:hover { background: #fdf9f4; }
+
+		.col-num {
+			width: 2.5rem;
+			color: var(--muted);
+			font-variant-numeric: tabular-nums;
+		}
+
+		.col-date {
+			width: 6.5rem;
+			white-space: nowrap;
+			font-variant-numeric: tabular-nums;
+			color: var(--muted);
+		}
+
+		.col-title { min-width: 10rem; }
+
+		.col-summary {
+			color: var(--muted);
+			font-size: 0.88rem;
+			line-height: 1.5;
+		}
+
+		/* ----- accordion ----- */
+		.accordion {
+			display: flex;
+			flex-direction: column;
+			gap: 0.65rem;
+		}
+
+		.accordion-item {
+			background: var(--card);
+			border: 1px solid var(--rule);
+			border-radius: 12px;
+			box-shadow: 0 2px 10px var(--shadow);
+			scroll-margin-top: 1.5rem;
+			overflow: hidden;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.accordion-item.is-open {
+			border-color: var(--chevron);
+			box-shadow: 0 4px 16px rgba(44, 40, 37, 0.08);
+		}
+
+		.accordion-trigger {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.5rem 1rem;
+			width: 100%;
+			padding: 1rem 1.25rem;
+			border: none;
+			background: transparent;
+			text-align: left;
+			cursor: pointer;
+			font: inherit;
+			color: inherit;
+		}
+
+		.accordion-trigger:hover { background: #fdf9f4; }
+
+		.accordion-trigger:focus-visible {
+			outline: 2px solid var(--accent);
+			outline-offset: -2px;
+		}
+
+		.accordion-item__num {
+			font-size: 0.75rem;
+			font-weight: 600;
+			color: var(--accent-soft);
+			letter-spacing: 0.06em;
+			flex-shrink: 0;
+		}
+
+		.accordion-item__date {
+			font-size: 0.85rem;
+			color: var(--muted);
+			font-variant-numeric: tabular-nums;
+			flex-shrink: 0;
+		}
+
+		.accordion-item__text {
+			flex: 1 1 12rem;
+			min-width: 0;
+		}
+
+		.accordion-item__title {
+			margin: 0;
+			font-family: var(--font-serif);
+			font-size: 1.05rem;
+			font-weight: 600;
+			line-height: 1.35;
+		}
+
+		.accordion-item__summary {
+			margin: 0.25rem 0 0;
+			font-size: 0.85rem;
+			color: var(--muted);
+			line-height: 1.45;
+		}
+
+		.accordion-item__chevron {
+			flex-shrink: 0;
+			width: 1.5rem;
+			height: 1.5rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--accent);
+			transition: transform 0.25s ease;
+		}
+
+		.accordion-item.is-open .accordion-item__chevron {
+			transform: rotate(180deg);
+		}
+
+		.accordion-panel {
+			display: grid;
+			grid-template-rows: 0fr;
+			transition: grid-template-rows 0.3s ease;
+		}
+
+		.accordion-item.is-open .accordion-panel {
+			grid-template-rows: 1fr;
+		}
+
+		.accordion-panel__inner {
+			overflow: hidden;
+			padding: 0 1.25rem;
+			border-top: 1px solid transparent;
+			transition: border-color 0.2s ease;
+		}
+
+		.accordion-item.is-open .accordion-panel__inner {
+			padding-bottom: 1.25rem;
+			border-top-color: var(--rule);
+		}
+
+		.accordion-panel__content {
+			padding-top: 1rem;
+		}
+
+		.meta {
+			display: grid;
+			grid-template-columns: 6.5rem 1fr;
+			gap: 0.45rem 1rem;
+			font-size: 0.9rem;
+			margin-bottom: 1rem;
+		}
+
+		.meta dt {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.82rem;
+		}
+
+		.meta dd {
+			margin: 0;
+			word-break: break-word;
+		}
+
+		.badge {
+			display: inline-block;
+			font-size: 0.78rem;
+			font-weight: 600;
+			padding: 0.15em 0.55em;
+			border-radius: 999px;
+			background: #e8f0e4;
+			color: #4a6b3a;
+		}
+
+		.post-body {
+			padding-top: 1rem;
+			border-top: 1px dashed var(--rule);
+		}
+
+		.post-body__label {
+			margin: 0 0 0.75rem;
+			font-size: 0.78rem;
+			font-weight: 600;
+			color: var(--muted);
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+
+		.post-body p {
+			margin: 0 0 0.85rem;
+			font-size: 0.95rem;
+			line-height: 1.75;
+			color: var(--ink);
+		}
+
+		.post-body p:last-child { margin-bottom: 0; }
+
+		.post-body img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+			margin-top: 1rem;
+			border-radius: 8px;
+			border: 1px solid var(--rule);
+			box-shadow: 0 2px 8px var(--shadow);
+		}
+
+		.table-link {
+			color: var(--accent);
+			text-decoration-color: var(--chevron);
+			text-underline-offset: 3px;
+			cursor: pointer;
+			background: none;
+			border: none;
+			padding: 0;
+			font: inherit;
+			text-align: left;
+		}
+
+		.table-link:hover { text-decoration-thickness: 2px; }
+
+		/* ----- footer notes ----- */
+		.notes {
+			background: #f3ece3;
+			border: 1px solid var(--rule);
+			border-radius: 10px;
+			padding: 1.1rem 1.25rem;
+		}
+
+		.notes h2 {
+			border-bottom: none;
+			padding-bottom: 0;
+			margin-bottom: 0.65rem;
+			font-size: 1rem;
+		}
+
+		.notes ul {
+			margin: 0;
+			padding-left: 1.25rem;
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		.notes li + li { margin-top: 0.35rem; }
+
+		.page-footer {
+			margin-top: 3rem;
+			padding-top: 1.25rem;
+			border-top: 1px solid var(--rule);
+			font-size: 0.82rem;
+			color: var(--muted);
+			text-align: center;
+		}
+
+		@media (max-width: 640px) {
+			.meta { grid-template-columns: 1fr; gap: 0.15rem; }
+			.meta dt { font-size: 0.75rem; }
+			.col-summary { display: none; }
+			th:nth-child(4), td:nth-child(4) { display: none; }
+			.accordion-item__summary { display: none; }
+		}
+	</style>
+</head>
+<body>
+	<header class="hero">
+		<div class="hero__inner">
+			<p class="hero__eyebrow">salbang-diary · local index</p>
+			<h1>살방살방 다이어리<br />게시물 목차</h1>
+			<p class="hero__note">
+				자동 정리 기준: <code>src/content/posts/</code> 내 마크다운 파일<br />
+				기록 목록(<code>/records/</code>)에는 <strong>2026-05-10 이후</strong> 글만 표시됩니다.
+			</p>
+		</div>
+	</header>
+
+	<main class="wrap">
+		<div class="stats">
+			<div class="stat">
+				<span class="stat__label">총 게시물</span>
+				<span class="stat__value">4편</span>
+			</div>
+			<div class="stat">
+				<span class="stat__label">마지막 갱신</span>
+				<span class="stat__value">2026-05-31</span>
+			</div>
+			<div class="stat">
+				<span class="stat__label">기록 목록 기준일</span>
+				<span class="stat__value">2026-05-10</span>
+			</div>
+		</div>
+
+		<section aria-labelledby="overview-heading">
+			<h2 id="overview-heading">목록 (최신순)</h2>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th class="col-num">#</th>
+							<th class="col-date">날짜</th>
+							<th class="col-title">제목</th>
+							<th class="col-summary">한 줄 요약</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="col-num">1</td>
+							<td class="col-date">2026-05-23</td>
+							<td class="col-title"><button type="button" class="table-link" data-open="post-1">급하지 않게, 천천히...</button></td>
+							<td class="col-summary">다리를 절뚝이며 걷던 날, 조동이형의 마음도 고장 났다. 그래도 천천히, 홍보와 당근 모임까지 약속했어요.</td>
+						</tr>
+						<tr>
+							<td class="col-num">2</td>
+							<td class="col-date">2026-05-16</td>
+							<td class="col-title"><button type="button" class="table-link" data-open="post-2">첫 시작은, 목감기와 함께</button></td>
+							<td class="col-summary">목감기와 Gemini·얼음 사이를 오간 뒤, 저녁 7시 첫 살방살방 걷기 모임을 시작했어요.</td>
+						</tr>
+						<tr>
+							<td class="col-num">3</td>
+							<td class="col-date">2026-05-15</td>
+							<td class="col-title"><button type="button" class="table-link" data-open="post-3">갑작스런 인연과 함께 첫 모임을 시작하다!</button></td>
+							<td class="col-summary">죽어 있던 오픈톡방에 춘식이님이 들어오며, 첫 모임을 향한 마음이 다시 불붙었어요.</td>
+						</tr>
+						<tr>
+							<td class="col-num">4</td>
+							<td class="col-date">2026-05-10</td>
+							<td class="col-title"><button type="button" class="table-link" data-open="post-4">살방살방 기록장을 열었어요</button></td>
+							<td class="col-summary">안동 강변 토요 모임의 추억을 여기 남깁니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section aria-labelledby="detail-heading">
+			<h2 id="detail-heading">게시물 상세</h2>
+
+			<div class="accordion" id="posts-accordion">
+				<div class="accordion-item" id="post-1" data-post>
+					<button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="panel-post-1">
+						<span class="accordion-item__num">#1</span>
+						<time class="accordion-item__date" datetime="2026-05-23">2026-05-23</time>
+						<span class="accordion-item__text">
+							<span class="accordion-item__title">급하지 않게, 천천히...</span>
+							<p class="accordion-item__summary">다리를 절뚝이며 걷던 날, 조동이형의 마음도 고장 났다. 그래도 천천히, 홍보와 당근 모임까지 약속했어요.</p>
+						</span>
+						<span class="accordion-item__chevron" aria-hidden="true">▾</span>
+					</button>
+					<div class="accordion-panel" id="panel-post-1" role="region" aria-label="급하지 않게, 천천히...">
+						<div class="accordion-panel__inner">
+							<div class="accordion-panel__content">
+								<dl class="meta">
+									<dt>슬러그</dt>
+									<dd><code class="mono">2026-05-23-slow-and-steady</code></dd>
+									<dt>소스 파일</dt>
+									<dd><code class="mono">src/content/posts/2026-05-23-slow-and-steady.md</code></dd>
+									<dt>사이트 URL</dt>
+									<dd><code class="mono">/salbang-diary/posts/2026-05-23-slow-and-steady/</code></dd>
+									<dt>기록 목록</dt>
+									<dd><span class="badge">✓ 노출</span> 2026-05-10 이후</dd>
+								</dl>
+								<div class="post-body">
+									<p class="post-body__label">본문</p>
+									<p>조동이형은 성격이 급해요.<br />성격만 급하지, 몸은 약해빠졌어요.<br />결국, 걷다가 다리를 절뚝이네요.<br />이런, 이런...</p>
+									<p>몸이 고장난 줄 알았는데,<br />마음도 고장이 났어요.<br />첫 모임 이후로, 고민을 많이 했나봐요...</p>
+									<p>대문자 I인 조동이형...<br />잘 해나갈 수 있겠죠?</p>
+									<p>"홍보를 좀 해주세요~~"<br />"당근나라에 모임을 만들어 BOA요~~"</p>
+									<p>네... 알겠습니닷 ! ! !<br />퍼뜩 맹글어 보겠심더 ! !</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="accordion-item" id="post-2" data-post>
+					<button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="panel-post-2">
+						<span class="accordion-item__num">#2</span>
+						<time class="accordion-item__date" datetime="2026-05-16">2026-05-16</time>
+						<span class="accordion-item__text">
+							<span class="accordion-item__title">첫 시작은, 목감기와 함께</span>
+							<p class="accordion-item__summary">목감기와 Gemini·얼음 사이를 오간 뒤, 저녁 7시 첫 살방살방 걷기 모임을 시작했어요.</p>
+						</span>
+						<span class="accordion-item__chevron" aria-hidden="true">▾</span>
+					</button>
+					<div class="accordion-panel" id="panel-post-2" role="region" aria-label="첫 시작은, 목감기와 함께">
+						<div class="accordion-panel__inner">
+							<div class="accordion-panel__content">
+								<dl class="meta">
+									<dt>슬러그</dt>
+									<dd><code class="mono">2026-05-16-first-start-sore-throat</code></dd>
+									<dt>소스 파일</dt>
+									<dd><code class="mono">src/content/posts/2026-05-16-first-start-sore-throat.md</code></dd>
+									<dt>사이트 URL</dt>
+									<dd><code class="mono">/salbang-diary/posts/2026-05-16-first-start-sore-throat/</code></dd>
+									<dt>기록 목록</dt>
+									<dd><span class="badge">✓ 노출</span> 2026-05-10 이후</dd>
+								</dl>
+								<div class="post-body">
+									<p class="post-body__label">본문</p>
+									<p>갑작스레 찾아온 춘식이님을 동료로 받아들여버린 조동이형...<br />그에 대한 반작용인가?<br />dog 뜬금없이 목감기에 걸려버렸네요.</p>
+									<p>새벽 3시 30분에 깼다가,<br />망할 Gemini의 충고를 듣고 얼음을 1시간 가량 물고 있다가 잠들었습니다.<br />편도가 목구멍 근처를 다 가리킨다는 것을 처음 알았습니다.<br />고마워요 Gemini.<br />당신 덕분에, 내 편도가 그렇게 성장할 수 있는 녀석인 지 처음 알았어요.</p>
+									<p>거의 잠을 못 잔 몸을 이끌고<br />신나게 병원에 가서,<br />의사 선생님께 참 잘했어요 칭찬 스티커 받은 다음에<br />대망의 오후 7시에 첫 살방살방 걷기 모임을 시작했습니다.</p>
+									<p>조동이형은 너무 긴장한 나머지,<br />신나게 본인의 TMI와 질문 공격을 퍼붓고<br />집에 와서 뻗었답니다.</p>
+									<p>그럼 20000.</p>
+									<p>오픈채팅방의 대표 이미지는, 제가 2주 전에 열린 "차전장군 노국공주 행사"에서 찍었던 사진입니다~</p>
+									<img src="../public/uploads/20260501_163838.jpg" alt="차전장군 노국공주 행사 사진" loading="lazy" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="accordion-item" id="post-3" data-post>
+					<button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="panel-post-3">
+						<span class="accordion-item__num">#3</span>
+						<time class="accordion-item__date" datetime="2026-05-15">2026-05-15</time>
+						<span class="accordion-item__text">
+							<span class="accordion-item__title">갑작스런 인연과 함께 첫 모임을 시작하다!</span>
+							<p class="accordion-item__summary">죽어 있던 오픈톡방에 춘식이님이 들어오며, 첫 모임을 향한 마음이 다시 불붙었어요.</p>
+						</span>
+						<span class="accordion-item__chevron" aria-hidden="true">▾</span>
+					</button>
+					<div class="accordion-panel" id="panel-post-3" role="region" aria-label="갑작스런 인연과 함께 첫 모임을 시작하다!">
+						<div class="accordion-panel__inner">
+							<div class="accordion-panel__content">
+								<dl class="meta">
+									<dt>슬러그</dt>
+									<dd><code class="mono">2026-05-15-first-meeting-chunsik</code></dd>
+									<dt>소스 파일</dt>
+									<dd><code class="mono">src/content/posts/2026-05-15-first-meeting-chunsik.md</code></dd>
+									<dt>사이트 URL</dt>
+									<dd><code class="mono">/salbang-diary/posts/2026-05-15-first-meeting-chunsik/</code></dd>
+									<dt>기록 목록</dt>
+									<dd><span class="badge">✓ 노출</span> 2026-05-10 이후</dd>
+								</dl>
+								<div class="post-body">
+									<p class="post-body__label">본문</p>
+									<p>평화롭던 어느 날...<br />라이언(가명)이라는 친구와 아무런 채팅을 하고 있지 않던 죽어있는 오픈톡방에<br />춘식이님이 들어왔다!!!</p>
+									<p>이 얼마나 귀중한 인연인가! ㅠㅠ<br />책임감이 더욱 막중해진다...</p>
+									<p>혹자는 그냥 힘 쫙 빼고 물 흘러가는 대로 살라고 하지만,<br />나에겐 그건 불에 빠뜨리는 것과 다름없다.</p>
+									<p>자, 어서 계획을 세우고 우리의 건강을 지키기 위해<br />재미있는 활동들을 기획해보자구!!</p>
+									<img src="../public/uploads/Screenshot_20260518_181940_KakaoTalk.jpg" alt="카카오톡 스크린샷" loading="lazy" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="accordion-item" id="post-4" data-post>
+					<button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="panel-post-4">
+						<span class="accordion-item__num">#4</span>
+						<time class="accordion-item__date" datetime="2026-05-10">2026-05-10</time>
+						<span class="accordion-item__text">
+							<span class="accordion-item__title">살방살방 기록장을 열었어요</span>
+							<p class="accordion-item__summary">안동 강변 토요 모임의 추억을 여기 남깁니다.</p>
+						</span>
+						<span class="accordion-item__chevron" aria-hidden="true">▾</span>
+					</button>
+					<div class="accordion-panel" id="panel-post-4" role="region" aria-label="살방살방 기록장을 열었어요">
+						<div class="accordion-panel__inner">
+							<div class="accordion-panel__content">
+								<dl class="meta">
+									<dt>슬러그</dt>
+									<dd><code class="mono">2026-05-10-welcome</code></dd>
+									<dt>소스 파일</dt>
+									<dd><code class="mono">src/content/posts/2026-05-10-welcome.md</code></dd>
+									<dt>사이트 URL</dt>
+									<dd><code class="mono">/salbang-diary/posts/2026-05-10-welcome/</code></dd>
+									<dt>기록 목록</dt>
+									<dd><span class="badge">✓ 노출</span> 2026-05-10 이후</dd>
+								</dl>
+								<div class="post-body">
+									<p class="post-body__label">본문</p>
+									<p>앞으로 여기에 달리고 걸은 날의 짧은 글과 사진을 올릴 거예요.<br />거리나 시간은 신경 쓰지 않아도 됩니다. 강변 풍경이 계절마다 달라지는 것처럼, 우리의 기록도 천천히 쌓이면 좋겠어요.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="notes" aria-labelledby="notes-heading">
+			<h2 id="notes-heading">참고</h2>
+			<ul>
+				<li><strong>글 추가 위치:</strong> <code>src/content/posts/YYYY-MM-DD-영문슬러그.md</code></li>
+				<li><strong>기록 목록 페이지:</strong> <code>/records/</code> — <code>RECORDS_SINCE</code>(2026-05-10) 이후 글만 표시</li>
+				<li><strong>새 글 템플릿:</strong> <code>docs/new-post.template.md</code></li>
+				<li><strong>에이전트 가이드:</strong> <code>AGENTS.md</code></li>
+			</ul>
+		</section>
+
+		<p class="page-footer">로컬 인덱스 · <code>docs/posts-index.html</code></p>
+	</main>
+
+	<script>
+		(function () {
+			const items = Array.from(document.querySelectorAll('[data-post]'));
+
+			function closeAll() {
+				items.forEach((item) => {
+					item.classList.remove('is-open');
+					item.querySelector('.accordion-trigger')?.setAttribute('aria-expanded', 'false');
+				});
+			}
+
+			function openItem(id, scroll) {
+				const item = document.getElementById(id);
+				if (!item) return;
+
+				const isOpen = item.classList.contains('is-open');
+				closeAll();
+
+				if (!isOpen) {
+					item.classList.add('is-open');
+					item.querySelector('.accordion-trigger')?.setAttribute('aria-expanded', 'true');
+					if (scroll) {
+						requestAnimationFrame(() => item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+					}
+				}
+			}
+
+			items.forEach((item) => {
+				item.querySelector('.accordion-trigger')?.addEventListener('click', () => {
+					openItem(item.id, false);
+				});
+			});
+
+			document.querySelectorAll('[data-open]').forEach((btn) => {
+				btn.addEventListener('click', () => openItem(btn.dataset.open, true));
+			});
+
+			if (location.hash) {
+				openItem(location.hash.slice(1), true);
+			}
+		})();
+	</script>
+</body>
+</html>
